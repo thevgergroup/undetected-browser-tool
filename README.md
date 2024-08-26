@@ -1,15 +1,28 @@
 ## Undetected Browser Tool
 
-The goal of this tool is to make accessing individual web pages behind bot detection like cloudflare a little easier.
-It is not a hacking tool, it's not 100% guaranteed, there are different settings in firewall services that could still block this.
-For example this is still detectable through CDP (chrome developer protocol) javascript.
-It's purpose is to be able to access publicly accessible data a single page at a time. 
-It's slow, as it creates a browser instance, and navigates to a page, so it's not a viable web crawler. 
-But it makes fetching a webpage that might not be available to an AI agent easier.
+### Introduction
 
-This is a langchain tool based on Selenium and the [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) project.
+The Undetected Browser Tool is an AI Agent tool to simplify the process of accessing individual web pages that are protected by bot detection systems.
+
+e.g. Cloudflare and similar services. 
+
+This tool is designed to facilitate access to publicly available data on a single-page basis for AI Agents. 
+This is not a hacking tool, or a paywall bypass tool, nor guaranteed in all situations. 
+
+It is not intended for web scraping or crawling purposes
+
+Various configurations in WAF and security services may still block access, and the tool can still be detected through methods like the Chrome Developer Protocol (CDP) in JavaScript.
+
+
+It works by creating a headless browser instance and navigating to a page, which inherently makes it slower and unsuitable for high-volume or automated data extraction.
+
+The main aim is to make it easier for AI agents to access web pages that might otherwise be challenging due to bot protection. 
+
+It is built as a LangChain tool using Selenium and the [undetected-chromedriver](https://github.com/ultrafunkamsterdam/undetected-chromedriver) project.
+
 
 - [Undetected Browser Tool](#undetected-browser-tool)
+  - [Introduction](#introduction)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Example with CrewAI](#example-with-crewai)
@@ -109,7 +122,6 @@ The use of automation tools to interact with websites is a nuanced topic that in
 
 If your intent is to occasionally access content to obtain information and properly reference the source, this tool can help streamline your workflow by automating repetitive tasks, thus saving time and effort.
 
-However, if your goal is to scrape large amounts of data from a website, this project is not intended for that purpose. Engaging in large-scale scraping can violate the terms of service of many websites, infringe on intellectual property rights, and potentially cause harm to the website's infrastructure. For those needs, there are dedicated web scraping services and tools that are more appropriate and specifically designed to handle such activities.
+However, if your goal is to scrape large amounts of data from a website, this project is not intended for that purpose. Engaging in large-scale scraping can violate the terms of service of many websites, infringe on intellectual property rights, and potentially cause harm to the website's infrastructure. 
 
 Always ensure that your use of automation tools is ethical and complies with the website's terms of service. Respect the rights of content owners and use automation responsibly.
-
