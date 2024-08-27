@@ -11,6 +11,8 @@ import undetected_chromedriver as uc
 from langchain.tools import BaseTool
 from pydantic import PrivateAttr
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+
 import atexit
 
 
@@ -76,7 +78,7 @@ class UndetectedBrowserTool(BaseTool):
 
 
         # Set up WebDriver using undetected-chromedriver
-        self.driver = uc.Chrome(options=options, user_multi_procs=True)
+        self.driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options, user_multi_procs=True)
         self.driver.set_page_load_timeout(30)  # Increase page load timeout
         self.driver.implicitly_wait(10)  # Increase implicit wait time
         
