@@ -78,7 +78,7 @@ class UndetectedBrowserTool(BaseTool):
 
 
         # Set up WebDriver using undetected-chromedriver
-        self.driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options, user_multi_procs=True)
+        self.driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
         self.driver.set_page_load_timeout(30)  # Increase page load timeout
         self.driver.implicitly_wait(10)  # Increase implicit wait time
         
