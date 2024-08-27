@@ -29,6 +29,9 @@ jobs:
         pip install
         build
         --user
+    - name: Look for chrome
+      run: >-
+        tree /home/runner/.wdm/drivers/chromedriver/
     - name: Install tox
       run: python -m pip install tox-gh>=1.2
     - name: Setup test suite
