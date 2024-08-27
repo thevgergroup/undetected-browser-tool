@@ -4,7 +4,7 @@ on: push
 
 jobs:
   test:
-    name: Build distribution 📦
+    name: Testing Python Package 📦
     runs-on: ubuntu-latest
     strategy:
         fail-fast: false
@@ -65,6 +65,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')  # only publish to PyPI on tag pushes
     needs:
     - build
+    - test
     runs-on: ubuntu-latest
     environment:
       name: pypi

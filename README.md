@@ -1,4 +1,5 @@
 ## Undetected Browser Tool
+[![Publish Python 🐍 distribution 📦 to PyPI and TestPyPI](https://github.com/thevgergroup/undetected-browser-tool/actions/workflows/python-publish.yml/badge.svg)](https://github.com/thevgergroup/undetected-browser-tool/actions/workflows/python-publish.yml)
 
 ### Introduction
 
