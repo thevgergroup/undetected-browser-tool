@@ -1,4 +1,5 @@
 
+import json
 import random
 
 import threading
@@ -113,6 +114,16 @@ class UndetectedBrowserTool(BaseTool):
     def fetch_page(self, url: str) -> str:
         """Fetch the content from a webpage URL."""
         print("Fetching URL:", url)
+        
+        # Check if the URL is a JSON object
+        # smolagents tends to provide json strings for parameters 
+        # like {'url' : '<http://....>'}
+        
+        if '{' in url :
+            u = json.loads(url)
+            url = u['url']
+            
+            
 
         for attempt in range(3):  # Retry up to 3 times
             try:
