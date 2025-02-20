@@ -16,10 +16,10 @@ classifiers= [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-langchain-core = "^0.2.34"
+langchain-core = "^0.3.37"
 selenium = "^4.23.1"
 undetected-chromedriver = "^3.5.5"
-langchain = "^0.2.14"
+langchain = "^0.3.19"
 webdriver-manager = "^4.0.2"
 
 

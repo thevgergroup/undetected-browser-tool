@@ -12,5 +12,10 @@
         "chromedriver",
         "langchain",
         "pydantic"
-    ]
+    ],
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#56190C",
+        "titleBar.activeBackground": "#782311",
+        "titleBar.activeForeground": "#FEF8F7"
+    }
 }

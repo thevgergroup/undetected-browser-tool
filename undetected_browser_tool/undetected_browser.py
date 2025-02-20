@@ -31,11 +31,11 @@ class UndetectedBrowserTool(BaseTool):
     name: str = "undetected_browser_tool"
     description: str = "Fetch the text content from a webpage URL using Selenium"
 
-    task_queue: Queue = PrivateAttr(default=None)
-    driver: Any = PrivateAttr(default=None)
-    worker_thread: threading.Thread = PrivateAttr(default=None)
-    headless: bool = PrivateAttr()
-    additional_opts: dict = PrivateAttr()
+    _task_queue: Queue = PrivateAttr(default=None)
+    _driver: Any = PrivateAttr(default=None)
+    _worker_thread: threading.Thread = PrivateAttr(default=None)
+    _headless: bool = PrivateAttr()
+    _additional_opts: dict = PrivateAttr()
     as_text: bool = True
     
     def __init__(self, headless: bool = True, as_text :bool = True, additional_opts: dict = {}, **kwargs):
@@ -48,9 +48,9 @@ class UndetectedBrowserTool(BaseTool):
             **kwargs: Additional keyword arguments.
         """
         super().__init__(**kwargs)
-        self.headless = headless
-        self.additional_opts = additional_opts
-        self.task_queue = Queue()
+        self._headless = headless
+        self._additional_opts = additional_opts
+        self._task_queue = Queue()
         self.as_text = as_text
         
         atexit.register(self.cleanup)
@@ -62,7 +62,7 @@ class UndetectedBrowserTool(BaseTool):
     def initialize_driver(self, additional_opts):
         """Initialize the WebDriver."""
         options = uc.ChromeOptions()
-        if self.headless:
+        if self._headless:
             options.add_argument("--headless=new")
         
         for key, value in additional_opts.items():
@@ -78,12 +78,12 @@ class UndetectedBrowserTool(BaseTool):
 
 
         # Set up WebDriver using undetected-chromedriver
-        self.driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
-        self.driver.set_page_load_timeout(30)  # Increase page load timeout
-        self.driver.implicitly_wait(10)  # Increase implicit wait time
+        self._driver = uc.Chrome(driver_executable_path=ChromeDriverManager().install(), options=options)
+        self._driver.set_page_load_timeout(30)  # Increase page load timeout
+        self._driver.implicitly_wait(10)  # Increase implicit wait time
         
         # Execute CDP commands to modify navigator properties
-        # self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+        # self._driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
         #     "source": """
         #     Object.defineProperty(navigator, 'webdriver', {
         #         get: () => undefined
@@ -92,9 +92,9 @@ class UndetectedBrowserTool(BaseTool):
         # })
 
         # Start a worker thread to process the queue
-        self.worker_thread = threading.Thread(target=self.process_queue)
-        self.worker_thread.daemon = True  # Daemonize the thread to exit with the program
-        self.worker_thread.start()
+        self._worker_thread = threading.Thread(target=self.process_queue)
+        self._worker_thread.daemon = True  # Daemonize the thread to exit with the program
+        self._worker_thread.start()
     
     def set_type(self, as_text: bool = True):
         self.as_text = as_text
@@ -102,13 +102,13 @@ class UndetectedBrowserTool(BaseTool):
     def process_queue(self):
         """Process the queue to fetch web pages."""
         while True:
-            url, result_queue = self.task_queue.get()
+            url, result_queue = self._task_queue.get()
             try:
                 result = self.fetch_page(url)
             except Exception as e:
                 result = f"Error fetching the webpage: {str(e)}"
             result_queue.put(result)
-            self.task_queue.task_done()
+            self._task_queue.task_done()
 
     def fetch_page(self, url: str) -> str:
         """Fetch the content from a webpage URL."""
@@ -117,14 +117,14 @@ class UndetectedBrowserTool(BaseTool):
         for attempt in range(3):  # Retry up to 3 times
             try:
                 # Open the webpage
-                self.driver.get(url)
+                self._driver.get(url)
                 time.sleep(random.uniform(1, 5))  # Random sleep to reduce load
 
                 if not self.as_text:
-                    return self.driver.page_source
+                    return self._driver.page_source
                 
                 # Fetch the page content using the updated method
-                page_text = self.driver.find_element(By.TAG_NAME, "body").text
+                page_text = self._driver.find_element(By.TAG_NAME, "body").text
 
                 return page_text.strip()
 
@@ -142,14 +142,14 @@ class UndetectedBrowserTool(BaseTool):
     def _run(self, url: str) -> str:
         """Add a fetch task to the queue and return the result."""
         result_queue = Queue()
-        self.task_queue.put((url, result_queue))
+        self._task_queue.put((url, result_queue))
         return result_queue.get()  # Block until result is available
     
     
     def cleanup(self):
         """Clean up the WebDriver."""
-        if self.driver:
-            self.driver.quit()
+        if self._driver:
+            self._driver.quit()
             
             
             
