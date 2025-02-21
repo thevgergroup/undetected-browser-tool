@@ -9,9 +9,16 @@
     },
     "hide-files.files": [],
     "cSpell.words": [
+        "Capterra",
         "chromedriver",
+        "crewai",
         "langchain",
-        "pydantic"
+        "numpy",
+        "pathlib",
+        "pydantic",
+        "Reston",
+        "smolagents",
+        "toolkits"
     ],
     "workbench.colorCustomizations": {
         "activityBar.background": "#56190C",

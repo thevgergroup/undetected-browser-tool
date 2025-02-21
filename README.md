@@ -27,13 +27,14 @@ It is built as a LangChain tool using Selenium and the [undetected-chromedriver]
   - [Installation](#installation)
   - [Usage](#usage)
   - [Example with CrewAI](#example-with-crewai)
+  - [Example of using with smolagents](#example-of-using-with-smolagents)
   - [Tips for being undetected](#tips-for-being-undetected)
   - [Ethics](#ethics)
 
 
 ### Installation
 
-```
+```sh
 pip install -U undetected-browser-tool
 ```
 
@@ -106,6 +107,51 @@ crew.kickoff(inputs={"topic" : "BI Reporting Platforms"})
 
 ```
 
+### Example of using with smolagents
+Smolagents can use langchain tools via
+
+```python
+from undetected_browser_tool import UndetectedBrowserTool
+from langchain_community.agent_toolkits.load_tools import load_tools
+
+from smolagents import CodeAgent, LiteLLMModel, Tool, ToolCallingAgent
+
+model = LiteLLMModel(model_id=model_id)
+tool_list = ["ddg-search", "wikipedia"] # "wolfram-alpha"
+AUTHORIZED_IMPORTS = [
+                      "requests",
+                      "pandas",
+                      "numpy",
+                      "json",
+                      "bs4",
+                      "datetime",
+                      "csv",
+                      "pathlib",
+                      "os",
+                      "io"
+                  ]
+
+# Create some tools for the agent
+tools = []
+for tool in tool_list: 
+  tools.append(
+    Tool.from_langchain(load_tools([tool], allow_dangerous_tools=True)[0])
+    )
+    
+
+# Add undetected browser        
+tools.append(
+    Tool.from_langchain(UndetectedBrowserTool()))
+
+agent = CodeAgent(tools=tools, 
+          model=model,
+          additional_authorized_imports=AUTHORIZED_IMPORTS,
+          max_steps=10,
+          add_base_tools=True)
+
+result = agent.run("Find me some good tacos near Reston, VA")
+
+```
 
 ### Tips for being undetected
 This is not a 100%, it's hard to be 100% but it's a good start.
