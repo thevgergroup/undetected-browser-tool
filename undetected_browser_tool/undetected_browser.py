@@ -118,6 +118,8 @@ class UndetectedBrowserTool(BaseTool):
         # Check if the URL is a JSON object
         # smolagents tends to provide json strings for parameters 
         # like {'url' : '<http://....>'}
+        if isinstance(url, dict):
+            url = url['url']
         
         if '{' in url :
             u = json.loads(url)
